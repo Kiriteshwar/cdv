@@ -31,40 +31,44 @@ model:
   dropout: 0.1
 
 training:
-  batch_size: 64
+  batch_size: 16              # ↓ critical (memory + stability)
   num_workers: 0
   epochs: 50
-  learning_rate: 0.003
+  learning_rate: 0.0002       # ↓ MASSIVE fix
   weight_decay: 0.00001
-  grad_clip_norm: 5.0
+  grad_clip_norm: 1.0         # ↓ prevents explosion
   kl_beta: 0.0001
   min_distance_angstrom: 1.2
+
   lr_decay_factor: 0.5
   lr_patience: 5
+
   kl_annealing:
     start_beta: 0.0
     end_beta: 0.0001
     warmup_epochs: 10
+
   curriculum_stages:
     - name: bootstrap
-      max_samples: 5000
+      max_samples: 3000       # ↓ smoother start
       epochs: 10
     - name: scaleup
-      max_samples: 20000
+      max_samples: 15000
       epochs: 20
     - name: full
       max_samples: 50000
       epochs: 20
+
   loss_weights:
     count: 1.0
     atom_type: 1.0
-    coord: 5.0
+    coord: 3.0                # ↓ big stabilization
     lattice: 1.0
-    kl: 0.05
-    distance_consistency: 0.2
-    symmetry_consistency: 0.1
-    refinement: 0.25
-    energy_proxy: 0.01
-    volume: 0.01
+    kl: 0.01                  # ↓ prevents KL explosion
+    distance_consistency: 0.1
+    symmetry_consistency: 0.05
+    refinement: 0.2
+    energy_proxy: 0.005       # ↓ very important
+    volume: 0.005
     matching_unmatched: 1.0
-    min_separation: 0.1
+    min_separation: 0.05
