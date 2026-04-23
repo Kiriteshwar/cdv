@@ -199,6 +199,9 @@ def run_epoch(
         outputs = model(batch)
         loss_dict = model.compute_losses(batch, outputs, loss_weights=loss_weights, kl_beta=kl_beta)
         loss = loss_dict["loss"]
+        if not torch.isfinite(loss):
+            print("⚠️ Skipping NaN batch")
+            continue
 
         if is_training:
             loss.backward()
