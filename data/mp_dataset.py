@@ -179,7 +179,7 @@ class MaterialsProjectDatasetBuilder:
         query_kwargs = {
             "fields": ["material_id", "structure", "nsites", "nelements"],
             "chunk_size": self.config.chunk_size,
-            "num_chunks": 2,   # VERY IMPORTANT
+            "num_chunks": 10,   # VERY IMPORTANT
         }
         # if self.config.max_materials is not None:
         #     query_kwargs["num_chunks"] = max(1, (self.config.max_materials + self.config.chunk_size - 1) // self.config.chunk_size)

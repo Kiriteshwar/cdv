@@ -8,7 +8,7 @@ dataset:
   species_vocab: cache/mp/mp_structures/species_vocab.json
   cache_root: cache/mp
   dataset_name: mp_structures
-  max_materials: 10000
+  max_materials: 50000
   max_elements: 3
   max_atoms: 50
   chunk_size: 500
@@ -31,10 +31,10 @@ model:
   dropout: 0.1
 
 training:
-  batch_size: 32
+  batch_size: 64
   num_workers: 0
   epochs: 50
-  learning_rate: 0.005
+  learning_rate: 0.003
   weight_decay: 0.00001
   grad_clip_norm: 5.0
   kl_beta: 0.0001
@@ -58,13 +58,13 @@ training:
   loss_weights:
     count: 1.0
     atom_type: 1.0
-    coord: 0.5
+    coord: 5.0
     lattice: 1.0
     kl: 0.05
     distance_consistency: 0.2
     symmetry_consistency: 0.1
     refinement: 0.25
-    energy_proxy: 0.05
-    volume: 0.05
+    energy_proxy: 0.01
+    volume: 0.01
     matching_unmatched: 1.0
     min_separation: 0.1

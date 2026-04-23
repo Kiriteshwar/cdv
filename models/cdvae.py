@@ -34,7 +34,7 @@ class CDVAEModelConfig:
     refinement_steps: int = 5
     energy_proxy_sigma: float = 1.5
     energy_proxy_epsilon: float = 0.1
-    min_lattice_volume: float = 10.0
+    min_lattice_volume: float = 50.0
     max_lattice_volume: float = 2500.0
 
 
@@ -103,6 +103,7 @@ class CDVAE(nn.Module):
     def decode(self, z: torch.Tensor, global_context: torch.Tensor | None = None) -> dict[str, torch.Tensor]:
         decoded = self.decoder(z, global_context=global_context)
         decoded["frac_coords"] = torch.clamp(decoded["frac_coords"], 0.0, 1.0)
+        decoded["frac_coords"] = decoded["frac_coords"].clamp(0, 1)
         decoded["lattice_matrix"] = self.decode_lattice_matrix(decoded["lattice_raw"])
         decoded["lattice_matrix"] = torch.clamp(decoded["lattice_matrix"], -20.0, 20.0)
         decoded["lattice_params"] = lattice_matrix_to_params_torch(decoded["lattice_matrix"])
